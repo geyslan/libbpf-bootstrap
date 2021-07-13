@@ -8,7 +8,7 @@
 #define MAX_EVENT_FDS 32
 
 struct proc_spec_key {
-	int pid_ns;
+	unsigned int pid_ns;
 	char specs[MAX_FILENAME_LEN];
 };
 
