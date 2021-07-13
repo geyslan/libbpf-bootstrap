@@ -42,7 +42,7 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 		break;
 	case 'n':
 		errno = 0;
-		env.ps_key.pid_ns = strtol(arg, NULL, 10);
+		env.ps_key.pid_ns = (unsigned int) strtol(arg, NULL, 10);
 		if (errno) {
 			fprintf(stderr, "Invalid duration: %s\n", arg);
 			argp_usage(state);
@@ -58,7 +58,7 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 			while (*arg && *arg == ' ')
 				arg++;
 
-			env.ps_value.event_fds[index] = atoi(arg);
+			env.ps_value.event_fds[index] = (__u16) atoi(arg);
 			index++;
 
 			while (*arg && *arg != ' ')
