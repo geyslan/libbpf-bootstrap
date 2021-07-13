@@ -5,10 +5,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <sys/resource.h>
+#include <bpf/bpf.h>
 #include <bpf/libbpf.h>
 #include "procspec.h"
 #include "procspec.skel.h"
-#include <bpf/bpf.h>
 
 
 static struct env {
@@ -140,23 +140,11 @@ int main(int argc, char **argv)
 	int map_fd;
 	map_fd = bpf_object__find_map_fd_by_name(skel->obj, "proc_spec");
 
-	return bpf_map_update_elem(map_fd, &env.ps_key, &env.ps_value, BPF_ANY);
-
-	// /* Process events */
-	// printf("%-8s %-5s %-16s %-7s %-7s %s\n",
-	// 	   "TIME", "EVENT", "COMM", "PID", "PPID", "FILENAME/EXIT CODE");
-	// while (!exiting) {
-	// 	//err = ring_buffer__poll(rb, 100 /* timeout, ms */);
-	// 	/* Ctrl-C will cause -EINTR */
-	// 	if (err == -EINTR) {
-	// 		err = 0;
-	// 		break;
-	// 	}
-	// 	if (err < 0) {
-	// 		printf("Error polling perf buffer: %d\n", err);
-	// 		break;
-	// 	}	
-	// }
+	err = bpf_map_update_elem(map_fd, &env.ps_key, &env.ps_value, BPF_ANY);
+	if (err)
+		fprintf(stderr, "Failed to insert/update into proc_spec map\n");
+	else
+		printf("proc_spec map updated!\n");
 
 cleanup:
 	/* Clean up */
