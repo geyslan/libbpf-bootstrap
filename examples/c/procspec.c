@@ -66,7 +66,6 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 		}
 		break;
 	//case ARGP_KEY_NO_ARGS:
-		//argp_usage(state);
 		// falltrhough
 	case ARGP_KEY_ARG:
 		argp_usage(state);
@@ -112,7 +111,6 @@ static void sig_handler(int sig)
 
 int main(int argc, char **argv)
 {
-	//struct ring_buffer *rb = NULL;
 	struct procspec_bpf *skel;
 	int err;
 
