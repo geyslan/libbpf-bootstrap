@@ -54,7 +54,7 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 		break;
 	case 'f':
 		int index = 0;
-		while (*arg) {
+		while (*arg && index < MAX_EVENT_FDS) {
 			while (*arg && *arg == ' ')
 				arg++;
 
