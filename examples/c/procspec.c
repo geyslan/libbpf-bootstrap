@@ -53,9 +53,17 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 		env.ps_key.specs[MAX_FILENAME_LEN-1] = '\0';		
 		break;
 	case 'f':
-		env.ps_value.event_fds[0] = 24;
-		env.ps_value.event_fds[1] = 25;
-		env.ps_value.event_fds[2] = 26;
+		int index = 0;
+		while (*arg) {
+			while (*arg && *arg == ' ')
+				arg++;
+
+			env.ps_value.event_fds[index] = atoi(arg);
+			index++;
+
+			while (*arg && *arg != ' ')
+				arg++;
+		}
 		break;
 	//case ARGP_KEY_NO_ARGS:
 		//argp_usage(state);
