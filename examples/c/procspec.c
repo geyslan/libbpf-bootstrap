@@ -143,12 +143,18 @@ int main(int argc, char **argv)
 		goto cleanup;
 	}
 
+	/* Get map fd by map name */
 	int map_fd;
 	map_fd = bpf_object__find_map_fd_by_name(skel->obj, "proc_spec");
+	if (map_fd == -EINVAL) {
+		fprintf(stderr, "Failed to find map fd by name\n");
+		goto cleanup;
+	}
 
+	/* Insert/Update map entry using map fd */
 	err = bpf_map_update_elem(map_fd, &env.ps_key, &env.ps_value, BPF_ANY);
 	if (err)
-		fprintf(stderr, "Failed to insert/update into proc_spec map\n");
+		fprintf(stderr, "Failed to insert/update proc_spec map entry\n");
 	else
 		printf("proc_spec map updated!\n");
 
